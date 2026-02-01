@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عيد ميلاد أحلى هبه 💜</title>
+    
+    <!-- استدعاء خط عربي جميل (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;800&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة لعمل تأثير الاحتفال (Canvas Confetti) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #8e44ad;
+            --secondary-color: #9b59b6;
+            --bg-gradient: linear-gradient(-45deg, #2c3e50, #4a148c, #8e44ad, #2980b9);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            max-width: 90%;
+            width: 550px;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* --- تنسيق الصور (السلايدر) --- */
+        .photo-slider {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 15px;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background: #fff;
+        }
+
+        .photo-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .photo-slider img.active {
+            opacity: 1;
+        }
+
+        /* --- زر الموسيقى --- */
+        .music-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px; /* مكان الزر */
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            color: white;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+            z-index: 20;
+        }
+        .music-btn:hover { background: rgba(255,255,255,0.4); transform: scale(1.1); }
+        .music-playing { animation: spin 4s linear infinite; background: rgba(255, 159, 243, 0.4); }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        h1 {
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            line-height: 1.4;
+            color: #fff;
+        }
+
+        .nurse-title {
+            display: block;
+            font-size: 1.5rem;
+            color: #ff9ff3;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .time-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 12px 10px;
+            min-width: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .time-box span {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .time-box .label {
+            font-size: 0.75rem;
+            margin-top: 5px;
+            color: #ddd;
+            font-weight: 300;
+        }
+
+        .celebrate-btn {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #ff9ff3, #feca57);
+            border: none;
+            border-radius: 50px;
+            color: #4a148c;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 159, 243, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .celebrate-btn:active { transform: scale(0.95); }
+        .celebrate-btn:hover { box-shadow: 0 6px 20px rgba(255, 159, 243, 0.6); }
+
+        .heart-beat {
+            display: inline-block;
+            animation: beat 1s infinite alternate;
+            color: #ff6b6b;
+        }
+
+        @keyframes beat { to { transform: scale(1.2); } }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.6rem; }
+            .nurse-title { font-size: 1.2rem; }
+            .time-box { min-width: 55px; padding: 10px 5px; }
+            .time-box span { font-size: 1.3rem; }
+            .photo-slider { width: 120px; height: 120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card" id="card">
+        <!-- زر الموسيقى -->
+        <button class="music-btn" onclick="toggleMusic()" id="musicBtn" title="تشغيل الموسيقى">🎵</button>
+
+        <!-- ألبوم الصور (ضع صور هبه هنا) -->
+        <div class="photo-slider">
+            <!-- 
+                تم تحديث الروابط لتقرأ الصور من المجلد مباشرة
+                تأكد أن أسماء الصور لديك هي: hiba1.jpg, hiba2.jpg, hiba3.jpg
+            -->
+            
+            <!-- الصورة الأولى -->
+            <img src="hiba1.jpg" class="active" alt="صورة هبه 1">
+            
+            <!-- الصورة الثانية -->
+            <img src="hiba2.jpg" alt="صورة هبه 2">
+            
+            <!-- الصورة الثالثة -->
+            <img src="hiba3.jpg" alt="صورة هبه 3">
+        </div>
+
+        <h1>
+            عيد ميلاد أحلى هبه 💜
+            <span class="nurse-title">أشطر نيرس ف الدنيا 💉</span>
+        </h1>
+        
+        <p class="subtitle">فاضل شوية وقت ونحتفل بأجمل قلب في الوجود ✨</p>
+        
+        <div class="countdown-container" id="countdown">
+            <div class="time-box"><span>00</span><div class="label">يوم</div></div>
+            <div class="time-box"><span>00</span><div class="label">ساعة</div></div>
+            <div class="time-box"><span>00</span><div class="label">دقيقة</div></div>
+            <div class="time-box"><span>00</span><div class="label">ثانية</div></div>
+        </div>
+
+        <button class="celebrate-btn" onclick="manualCelebrate()">🎉  دوسي كده</button>
+    </div>
+
+    <!-- عنصر الصوت المخفي -->
+    <!-- تم ربط ملف الصوت song.mp3 هنا -->
+    <audio id="bgMusic" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- إعدادات الصور ---
+        const slides = document.querySelectorAll('.photo-slider img');
+        let currentSlide = 0;
+
+        // دالة تغيير الصور تلقائياً
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 3000); // تغيير الصورة كل 3 ثواني
+
+        // --- إعدادات الموسيقى ---
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicBtn.classList.remove('music-playing');
+                musicBtn.innerHTML = "🎵";
+            } else {
+                // ملاحظة: المتصفحات قد تمنع التشغيل التلقائي إذا لم يضع المستخدم ملف صوتي صالح
+                music.play().catch(e => alert("يرجى إضافة ملف صوتي في الكود أولاً!"));
+                musicBtn.classList.add('music-playing');
+                musicBtn.innerHTML = "⏸";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function manualCelebrate() {
+            fireConfetti();
+            if (!isPlaying) toggleMusic(); // تشغيل الموسيقى عند الضغط على الزر أيضاً
+        }
+
+        // --- العداد ---
+        const targetDate = new Date(2026, 1, 10, 0, 0, 0).getTime();
+        const countdownElement = document.getElementById("countdown");
+        const cardElement = document.getElementById("card");
+        let timerInterval;
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                showBirthdayMessage();
+                fireConfetti();
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownElement.innerHTML = `
+                <div class="time-box"><span>${days}</span><div class="label">يوم</div></div>
+                <div class="time-box"><span>${hours}</span><div class="label">ساعة</div></div>
+                <div class="time-box"><span>${minutes}</span><div class="label">دقيقة</div></div>
+                <div class="time-box"><span>${seconds}</span><div class="label">ثانية</div></div>
+            `;
+        }
+
+        function showBirthdayMessage() {
+            cardElement.innerHTML = `
+                <div class="photo-slider" style="margin-bottom:15px">
+                     ${document.querySelector('.photo-slider').innerHTML}
+                </div>
+                <h1 style="font-size: 2.2rem; margin-bottom: 15px;">🎉 كل سنة وإنتِ طيبة 🎉</h1>
+                <h2 style="color: #ff9ff3; font-size: 1.5rem;">يا أحلى هبه وأشطر نيرس 👩‍⚕️</h2>
+                <p class="subtitle" style="font-size: 1.2rem; line-height: 1.6;">
+                    يارب تكون سنة سعيدة عليكي وتحققي فيها كل أحلامك 💜<br>
+                    ربنا يحفظك ويديم عليكِ ضحكتك الحلوة
+                </p>
+                <button class="celebrate-btn" onclick="manualCelebrate()">احتفال تاني! 🥳</button>
+            `;
+            // إعادة تفعيل السلايدر في الرسالة الجديدة
+            setTimeout(() => {
+                const newSlides = document.querySelectorAll('.photo-slider img');
+                let newCurrent = 0;
+                setInterval(() => {
+                    newSlides[newCurrent].classList.remove('active');
+                    newCurrent = (newCurrent + 1) % newSlides.length;
+                    newSlides[newCurrent].classList.add('active');
+                }, 3000);
+            }, 100);
+        }
+
+        // دالة Confetti (نفس السابقة)
+        function fireConfetti() {
+            var count = 200;
+            var defaults = { origin: { y: 0.7 } };
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+            fire(0.25, { spread: 26, startVelocity: 55, colors: ['#ff9ff3', '#feca57'] });
+            fire(0.2, { spread: 60, colors: ['#8e44ad', '#ffffff'] });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8, colors: ['#54a0ff', '#5f27cd'] });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+        }
+
+        timerInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+
+</body>
+</html>
